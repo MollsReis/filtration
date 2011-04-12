@@ -17,3 +17,7 @@ module Filtration
   end
 
 end
+
+class Object
+  extend Filtration
+end
