@@ -1,0 +1,23 @@
+= Filtration
+Filtration is a clean, lightweight way to filter arguments going into and out of methods.
+
+== Example Usage
+class Bar
+  def foo(x)
+    x + 2
+  end
+  def foo_top(x)
+    x + 2
+  end
+end
+
+class Foo < Bar
+  prefilter(:foo){|x| x * 2} # (x * 2) + 2
+  postfilter(:foo){|x| x * 2} # (x + 2) * 2
+end 
+
+== Requirements
+Filtration stands on its own!
+
+== Development
+RSpec is used for testing.
