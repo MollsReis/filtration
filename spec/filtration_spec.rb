@@ -30,20 +30,20 @@ describe Filtration do
 
   it 'executes a code block before the specified method' do
     class Test3 < Good 
+      prefilter :foo, :bar
       def bar(x)
         x * 2
       end
-      prefilter :foo, :bar
     end
     Test1.new.foo(2).should === 6
   end
 
   it 'executes a code block after the specified method' do
     class Test4 < Good
+      postfilter :foo, :bar
       def bar(x)
         x * 2
       end
-      postfilter :foo, :bar
     end
     Test2.new.foo(2).should === 8
   end
@@ -57,12 +57,12 @@ describe Filtration do
 
   it 'raises an error if the filter method has no arguments' do
     class Test6 < Good
-      extend RSpec::Matchers
+      prefilter :foo, :bar
       def bar
         nil
       end
-      lambda { prefilter :foo, :bar }.should raise_error
     end
+    lambda { Test6.new.foo(2) }.should raise_error
   end
 
   it 'raises an error if both filter and block are specified' do
