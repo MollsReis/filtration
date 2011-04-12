@@ -7,14 +7,14 @@ Example:
     def foo(x)
       x + 2
     end
-    def foo_top(x)
+    def foo_too(x)
       x + 2
     end
   end
   
   class Foo < Bar
-    prefilter(:foo){|x| x * 2} # (x * 2) + 2
-    postfilter(:foo){|x| x * 2} # (x + 2) * 2
+    prefilter(:foo){|x| x * 2}        # (x * 2) + 2
+    postfilter(:foo_too){|x| x * 2}   # (x + 2) * 2
   end 
 
 == Requirements
