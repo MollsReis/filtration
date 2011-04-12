@@ -27,16 +27,15 @@ describe Filtration do
   end
 
   it 'raises an error if the method has no arguments' do
-    pending
     class Foo3
       def foo
         2
       end
     end
     class Test3 < Foo3
-      prefilter(:foo){|x| x * 2}
+      extend RSpec::Matchers
+      lambda { prefilter(:foo){|x| x * 2} }.should raise_error
     end
-    lambda { Test3.new.foo }.should raise_error
   end
 
 end
