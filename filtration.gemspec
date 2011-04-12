@@ -1,12 +1,12 @@
 spec = Gem::Specification.new do |s|
   s.name = "filtration"
-  s.version = "0.0.1"
+  s.version = "0.0.2"
   s.author = "R. Scott Reis"
   s.platform = Gem::Platform::RUBY
   s.summary = "Filtration pre/post method callback"
   s.require_path = "lib"
   s.has_rdoc = true
-  s.rdoc_options << '-m' << 'README.rdoc' << '-t' << 'Anemone'
+  s.rdoc_options << '-m' << 'README.rdoc' << '-t' << 'Filtration'
   s.extra_rdoc_files = ["README.rdoc"]
   
   s.files =  %w[

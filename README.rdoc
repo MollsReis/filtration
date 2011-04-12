@@ -15,7 +15,16 @@ Example:
   class Foo < Bar
     prefilter(:foo){|x| x * 2}        # (x * 2) + 2
     postfilter(:foo_too){|x| x * 2}   # (x + 2) * 2
-  end 
+  end
+
+  class AnotherFoo < Bar
+    prefilter :foo, :double           # (x * 2) + 2
+    postfilter :foo_too, :double      # (x + 2) * 2
+    
+    def double(x)
+      x * 2
+    end
+  end
 
 == Requirements
 Filtration stands on its own!
