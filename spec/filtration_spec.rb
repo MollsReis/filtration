@@ -1,88 +1,141 @@
 require 'spec_helper'
 
-class Good
-  def foo(x)
-    x + 2
-  end
-end
-
-class Bad
-  def foo
-    2
-  end
-end
-
 describe Filtration do
 
-  it 'executes a code block before the specified method' do
-    class Test1 < Good 
-      prefilter(:foo){|x| x * 2}
-    end
-    Test1.new.foo(2).should === 6
-  end
+  describe '#prefilter' do
 
-  it 'executes a code block after the specified method' do
-    class Test2 < Good
-      postfilter(:foo){|x| x * 2}
-    end
-    Test2.new.foo(2).should === 8
-  end
+    context 'given a valid target method' do
 
-  it 'executes a code block before the specified method' do
-    class Test3 < Good 
-      prefilter :foo, :bar
-      def bar(x)
-        x * 2
+      context 'and a code block for filtering' do
+        it 'executes the block on the target method argument' do
+          test = Class.new(Good) { prefilter(:foo){|x| x * 2} }
+          test.new.foo(2).should === 6
+        end
       end
-    end
-    Test1.new.foo(2).should === 6
-  end
 
-  it 'executes a code block after the specified method' do
-    class Test4 < Good
-      postfilter :foo, :bar
-      def bar(x)
-        x * 2
+      context 'and a valid filter method' do
+        it 'executes the filter method on the target method argument' do
+          test = Class.new(Good) do
+            prefilter :foo, :double
+            def double(x) x * 2; end
+          end
+          test.new.foo(2).should === 6
+        end
       end
-    end
-    Test2.new.foo(2).should === 8
-  end
 
-  it 'raises an error if the method has no arguments' do
-    class Test5 < Bad
-      extend RSpec::Matchers
-      lambda { prefilter(:foo){|x| x * 2} }.should raise_error
-    end
-  end
-
-  it 'raises an error if the filter method has no arguments' do
-    class Test6 < Good
-      prefilter :foo, :bar
-      def bar
-        nil
+      context 'and an invalid filter method' do
+        it 'raises an error' do
+          test = Class.new(Good) do
+            prefilter :foo, :double
+            def double() 2; end
+          end
+          expect { test.new.foo(2) }.to raise_error
+        end
       end
+
     end
-    lambda { Test6.new.foo(2) }.should raise_error
+
+    context 'given an invalid target method' do
+
+      context 'and a code block for filtering' do
+        it 'raises an error' do
+          Class.new(Bad) do
+            extend RSpec::Matchers
+            expect { prefilter(:foo){|x| x * 2} }.to raise_error
+          end
+        end
+      end
+
+      context 'and a valid filter method' do
+        it 'raises an error' do
+          test = Class.new(Good) do
+            prefilter :foo, :double
+            def double(x) x * 2; end
+          end
+          expect { test.new.foo }.to raise_error
+        end
+      end
+
+      context 'and an invalid filter method' do
+        it 'raises an error' do
+          test = Class.new(Good) do
+            prefilter :foo, :double
+            def double() 2; end
+          end
+          expect { test.new.foo }.to raise_error
+        end
+      end
+
+    end
+
   end
 
-  it 'raises an error if both filter and block are specified' do
-    class Test7 < Good
-      extend RSpec::Matchers
-      def bar(x)
-        x * 2
-      end
-      lambda { prefilter(:foo,:bar){|x| x * 2} }.should raise_error
-    end
-  end
+  describe '#postfilter' do
 
-  it 'raises an error if neither filter nor block are specified' do
-    class Test8 < Good
-      extend RSpec::Matchers
-      def bar(x)
-        x * 2
+    context 'given a valid target method' do
+
+      context 'and a code block for filtering' do
+        it 'executes the block on the target method argument' do
+          test = Class.new(Good) { postfilter(:foo){|x| x * 2} }
+          test.new.foo(2).should === 8
+        end
       end
-      lambda { prefilter(:foo) }.should raise_error
+
+      context 'and a valid filter method' do
+        it 'executes the filter method on the target method argument' do
+          test = Class.new(Good) do
+            postfilter :foo, :double
+            def double(x) x * 2; end
+          end
+          test.new.foo(2).should === 8
+        end
+      end
+
+      context 'and an invalid filter method' do
+        it 'raises an error' do
+          test = Class.new(Good) do
+            postfilter :foo, :double
+            def double() 2; end
+          end
+          expect { test.new.foo(2) }.to raise_error
+        end
+      end
+
     end
+
+    context 'given an invalid target method' do
+
+      context 'and a code block for filtering' do
+        it 'raises an error' do
+          Class.new(Bad) do
+            extend RSpec::Matchers
+            expect { postfilter(:foo){|x| x * 2} }.to raise_error
+          end
+        end
+      end
+
+      context 'and a valid filter method' do
+        it 'raises an error' do
+          test = Class.new(Good) do
+            postfilter :foo, :double
+            def double(x) x * 2; end
+          end
+          expect { test.new.foo }.to raise_error
+        end
+      end
+
+      context 'and an invalid filter method' do
+        it 'raises an error' do
+          test = Class.new(Good) do
+            postfilter :foo, :double
+            def double() 2; end
+          end
+          expect { test.new.foo }.to raise_error
+        end
+      end
+
+    end
+
   end
 
 end

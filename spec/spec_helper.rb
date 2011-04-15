@@ -1,9 +1,11 @@
 require 'simplecov'
-SimpleCov.start do
-  add_filter '/spec/'
-end
+SimpleCov.start { add_filter '/spec/' }
 
 $:.unshift(File.dirname(__FILE__) + '/../lib/')
 
-require 'rspec'
+require 'rubygems'
+require 'bundler/setup'
+Bundler.require(:default,:test)
+
 require 'filtration'
+require 'spec_dummies'
