@@ -1,9 +1,9 @@
 spec = Gem::Specification.new do |s|
   s.name = "filtration"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
   s.author = "R. Scott Reis"
   s.platform = Gem::Platform::RUBY
-  s.summary = "Filtration pre/post method callback"
+  s.summary = "Filtration enables pre/post method callback, similar to Python decorators"
   s.require_path = "lib"
   s.has_rdoc = true
   s.rdoc_options << '-m' << 'README.rdoc' << '-t' << 'Filtration'
