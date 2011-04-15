@@ -1,33 +1,64 @@
 = Filtration
-Filtration is a clean, lightweight way to filter arguments going into and out of methods.
+Filtration is a clean, lightweight way to filter arguments going into and coming out of methods (similar to decorators in Python).
 
 == Usage
 Example:
   class Bar
+  
     def foo(x)
       x + 2
     end
+    
     def foo_too(x)
       x + 2
     end
+    
+    def foo_as_well(x)
+      "#{x.to_s} to the max!"
+    end
+    
+    def foo_forever(x)
+      "#{x.to_s} to the max!"
+    end
+  
   end
   
   class Foo < Bar
-    prefilter(:foo){|x| x * 2}        # (x * 2) + 2
-    postfilter(:foo_too){|x| x * 2}   # (x + 2) * 2
+    
+    prefilter(:foo){|x| x * 2}
+    #=> (x * 2) + 2 = 6 (for x = 2)
+    
+    postfilter(:foo_too){|x| x * 2}
+    #=> (x + 2) * 2 = 8 (for x = 2)
+  
   end
-
+  
   class AnotherFoo < Bar
-    prefilter :foo, :double           # (x * 2) + 2
-    postfilter :foo_too, :double      # (x + 2) * 2
+    
+    prefilter :foo, :double
+    #=> (x * 2) + 2 = 6 (for x = 2)
+    
+    postfilter :foo_too, :double
+    #=> (x + 2) * 2 => 8 (for x = 2)
     
     def double(x)
       x * 2
     end
+  
+  end
+  
+  class YetAnotherFoo < Bar
+    
+    prefilter :foo_as_well, &:upcase
+    #=> "#{x.upcase} to the max!" = 'FILTRATION to the max!' (for x = 'filtration')
+    
+    postfilter :foo_forever, &:upcase
+    #=> "#{x} to the max!".upcase = 'FILTRATION TO THE MAX!' (for x = 'filtration')
+    
   end
 
 == Requirements
 Filtration stands on its own!
 
 == Development
-RSpec is used for testing.
+RSpec is used for testing, with SimpleCov for code coverage.
