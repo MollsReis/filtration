@@ -1,13 +1,13 @@
 module Filtration
 
-  # for method with arity > 0, 'method', intercept arguments and apply
-  # method 'filter' or passed 'block' to them before running 'method' with them
-  def prefilter(method, filter=nil, &block)
-    old_method = instance_method(method)
-    raise "Method #{method} takes 0 arguments" if old_method.arity == 0
+  # for method with arity > 0, 'target', intercept arguments and apply
+  # method 'filter' or passed 'block' to them before running 'target' with them
+  def prefilter(target, filter=nil, &block)
+    old_method = instance_method(target)
+    raise "Method #{target} takes 0 arguments" if old_method.arity == 0
     raise "Must use either passed filter method or passed block" unless filter.nil? ^ block.nil?
 
-    define_method(method) do |*args|
+    define_method(target) do |*args|
       if filter.nil?
         old_method.bind(self).call(block.call(*args))
       else
@@ -18,13 +18,13 @@ module Filtration
     end
   end
 
-  # for method, 'method', intercept output and apply method 'filter' or 
+  # for method, 'target', intercept output and apply method 'filter' or
   # passed 'block' to it before returning the value
-  def postfilter(method, filter=nil, &block)
-    old_method = instance_method(method)
+  def postfilter(target, filter=nil, &block)
+    old_method = instance_method(target)
     raise "Must use either passed filter method or passed block" unless filter.nil? ^ block.nil?
 
-    define_method(method) do |*args|
+    define_method(target) do |*args|
       if filter.nil?
         block.call(old_method.bind(self).call(*args))
       else
