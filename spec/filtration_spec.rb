@@ -133,49 +133,6 @@ describe Filtration do
 
     end
 
-    context 'given an invalid target method' do
-
-      context 'and a code block for filtering' do
-        it 'raises an error' do
-          Class.new(Bad) do
-            extend RSpec::Matchers
-            expect { postfilter(:foo){|x| x * 2} }.to raise_error
-          end
-        end
-      end
-
-      context 'and a valid filter method' do
-        it 'raises an error' do
-          test = Class.new(Bad) do
-            extend RSpec::Matchers
-            expect { postfilter :foo, :double }.to raise_error
-            def double(x) x * 2; end
-          end
-        end
-      end
-
-      context 'and an invalid filter method' do
-        it 'raises an error' do
-          test = Class.new(Bad) do
-            extend RSpec::Matchers
-            expect { postfilter :foo, :double }.to raise_error
-            def double() 2; end
-          end
-        end
-      end
-
-      context 'and both a filter method and a block' do
-        it 'raises an error' do
-          test = Class.new(Bad) do
-            extend RSpec::Matchers
-            expect { postfilter(:foo,:double) {|x| x * 2} }.to raise_error
-            def double(x) x * 2; end
-          end
-        end
-      end
-
-    end
-
   end
 
 end
