@@ -3,6 +3,7 @@ Filtration is a clean, lightweight way to filter arguments going into and coming
 
 == Usage
 Example:
+
   class Bar
   
     def foo(x)
@@ -26,20 +27,20 @@ Example:
   class Foo < Bar
     
     prefilter(:foo){|x| x * 2}
-    #=> (x * 2) + 2 = 6 (for x = 2)
     
     postfilter(:foo_too){|x| x * 2}
-    #=> (x + 2) * 2 = 8 (for x = 2)
-  
+
   end
-  
+
+  randy = Foo.new
+  randy.foo(2) #=> (x * 2) + 2 = 6 (for x = 2)
+  randy.foo_too(2) #=> (x + 2) * 2 = 8 (for x = 2)
+
   class AnotherFoo < Bar
     
     prefilter :foo, :double
-    #=> (x * 2) + 2 = 6 (for x = 2)
     
     postfilter :foo_too, :double
-    #=> (x + 2) * 2 => 8 (for x = 2)
     
     def double(x)
       x * 2
@@ -47,15 +48,21 @@ Example:
   
   end
   
+  savage = AnotherFoo.new
+  savage.foo(2)  #=> (x * 2) + 2 = 6
+  savage.foo_too(2) #=> (x + 2) * 2 => 8
+  
   class YetAnotherFoo < Bar
     
     prefilter :foo_as_well, &:upcase
-    #=> "#{x.upcase} to the max!" = 'FILTRATION to the max!' (for x = 'filtration')
     
     postfilter :foo_forever, &:upcase
-    #=> "#{x} to the max!".upcase = 'FILTRATION TO THE MAX!' (for x = 'filtration')
     
   end
+
+  machoman = YetAnotherFoo.new
+  machoman.foo_as_well('filtration') #=> "#{x.upcase} to the max!" = 'FILTRATION to the max!'
+  machoman.foo_forever('filtration') #=> "#{x} to the max!".upcase = 'FILTRATION TO THE MAX!'
 
 == Requirements
 Filtration stands on its own!
