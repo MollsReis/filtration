@@ -1,6 +1,6 @@
 spec = Gem::Specification.new do |s|
   s.name = "filtration"
-  s.version = "0.0.6"
+  s.version = "0.0.7"
   s.author = "R. Scott Reis"
   s.platform = Gem::Platform::RUBY
   s.summary = "Filtration enables pre/post method callback, similar to Python decorators"
