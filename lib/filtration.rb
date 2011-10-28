@@ -29,7 +29,6 @@ module Filtration
         block.call(old_method.bind(self).call(*args))
       else
         filter_method = method(filter)
-        raise "Filter method #{filter} takes 0 arguments" if filter_method.arity == 0
         self.send(filter,old_method.bind(self).call(*args))
       end
     end
