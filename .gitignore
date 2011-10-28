@@ -1,3 +1,5 @@
 .project
 *.gem
 coverage/**
+.idea/*
+*.iml
