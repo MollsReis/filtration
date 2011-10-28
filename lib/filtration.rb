@@ -28,7 +28,6 @@ module Filtration
       if filter.nil?
         block.call(old_method.bind(self).call(*args))
       else
-        filter_method = method(filter)
         self.send(filter,old_method.bind(self).call(*args))
       end
     end
